@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>aespa 聖地巡禮地圖</title>
+    <title>跟著 aespa 全世界走透透</title>
     <style>
-        /* 恢復正常 CSS 樣式 */
         html, body { 
             height: 100%; 
             margin: 0; 
@@ -53,7 +52,7 @@
         .card-text-content {
         /* 設置固定寬度比例，使其與圖片分配空間 */
             width: 60%; 
-            flex-grow: 0; /* 移除 flex-grow: 1，防止佔滿所有空間 */
+            flex-grow: 0; 
             flex-shrink: 0; /* 阻止文字區塊被圖片擠壓 */
             margin-right: 15px;
             /* 確保長標題能換行 */
@@ -68,19 +67,18 @@
             font-size: 20px; /* 增大標題字體 */
             margin-bottom: 5px; 
             color: #333; 
-            /* 🌟 新增：確保長標題在窄空間內能換行 🌟 */
+            /* 確保長標題能換行 */
             overflow-wrap: break-word; 
             word-wrap: break-word;
         }
         .location-card img {
-            /* 🌟 核心修正 2: 給圖片一個較小的固定比例，例如佔總寬度的 35% 🌟 */
             width: 35%; /* 確保總和 (60% + 35%) < 100%，留下 margin 空間 */
             height: auto;
             object-fit: contain; /* 確保圖片不被拉伸，填滿容器 */
             flex-shrink: 0; /* 防止圖片被壓縮 */
             border-radius: 4px;
-            margin: 0; /* 移除舊有的 margin */
-            /* 🌟 新增：確保圖片不會超出容器的 max-width 🌟 */
+            margin: 0; 
+            /* 確保圖片不會超出容器的 max-width */
             max-width: 100%;
         }
         .card-line {
@@ -128,7 +126,7 @@
     <div id="map"></div>
 
     <div id="sidebar">
-        <h2>aespa 聖地巡禮地點列表 (共 <span id="location-count">0</span> 處)</h2>
+        <h2>跟著 aespa 全世界走透透 (目前共 <span id="location-count">0</span> 處)</h2>
         
         <div style="margin-bottom: 15px; padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
             <label for="member-filter" style="font-weight: bold;">依成員篩選：</label>
@@ -177,9 +175,9 @@
     const MEMBER_INFO = {
         "Karina": { color: "blue", symbol: "💙" }, // 愛心
         "Giselle": { color: "pink", symbol: "🌙" }, // 月亮
-        "Winter": { color: "white", symbol: "⭐" }, // 星星 (Google Maps 會自動將 'white' 標記渲染為黑邊白點)
+        "Winter": { color: "white", symbol: "⭐" }, // 星星
         "Ningning": { color: "purple", symbol: "🦋" }, // 蝴蝶
-        "Default": { color: "orange", symbol: "🔮" } // 用於多成員地點或未知成員
+        "Default": { color: "orange", symbol: "🔮" } // 用於多成員
     };
     // =================================================================
     // 1. 數據宣告 (變為空陣列，等待從 JSON 檔案載入)
@@ -193,7 +191,7 @@
     let infoWindow; 
 
     /**
-     * 🌟 新增：載入數據並初始化地圖的主要函式 🌟
+     * 載入數據並初始化地圖的主要函式 
      */
     async function loadDataAndInitMap() {
         try {
@@ -264,12 +262,10 @@
      * @param {Object} location - 地點數據物件
      */
     function addMarker(location) {
-        // 🌟 修正：不傳遞 icon 或 label，使用 Google Maps 預設標記 🌟
         const marker = new google.maps.Marker({
             position: { lat: location.lat, lng: location.lng },
             map: map,
             title: location.name
-            // 移除 icon 和 label 屬性
         });
 
         const imageUrls = location.ig_img_urls || [];
@@ -313,26 +309,17 @@
     }
 
     // =================================================================
-    // 3. 側邊欄列表渲染 (已修正：加入多圖輪播功能)
+    // 3. 側邊欄列表渲染 
     // =================================================================
-
-    /**
-     * 渲染側邊欄地點列表 (已加入多圖輪播)
-     */
     function renderSidebarList() {
         const listContainer = document.getElementById('locations-list');
         listContainer.innerHTML = ''; 
 
-        locationsData.forEach((location, index) => { // 🌟 注意：加入 index 🌟
+        locationsData.forEach((location, index) => { // 加入 index 
             const card = document.createElement('div');
             card.id = `card-${location.lat}-${location.lng}`; 
             card.className = 'location-card';
             
-            // 確保 Flex 樣式生效
-            // ⚠️ 這裡使用 class 樣式，請確保外部 CSS 已經設置好 50%-50% 的佈局
-            // 註：為確保 50-50 佈局，我將 card.style.cssText 移除，請確保您外部 CSS 是正確的。
-            
-            // 🌟 核心修正：生成所有成員的符號字串 🌟
             const symbolsArray = location.members.map(member => {
                 const info = getMemberInfo([member]);
                 return info.symbol;
@@ -385,7 +372,7 @@
             listContainer.appendChild(card);
         });
         
-        // 🌟 新增：將點擊事件綁定到所有輪播容器 🌟
+        // 將點擊事件綁定到所有輪播容器
         bindCarouselEvents();
     }
 
@@ -441,15 +428,14 @@
     }
 
     // =================================================================
-    // 5. 載入 Google Maps 函式庫 (請填入您的金鑰！)
+    // 5. 載入 Google Maps 函式庫 
     // =================================================================
     const script = document.createElement('script');
-    // ⚠️ 這裡請務必替換成您的真實 API 金鑰
     script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyDGZujGgC207RjOC7AkNsAj4EmCQWkPt68&callback=loadDataAndInitMap`;
     script.async = true;
     document.head.appendChild(script);
 
-    // 🌟 修正：將新的載入函式暴露給全域環境
+    // 將新的載入函式暴露給全域環境
     window.loadDataAndInitMap = loadDataAndInitMap;
     
 </script>
