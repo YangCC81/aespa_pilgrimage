@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>跟著 aespa 全世界走透透</title>
+    <title>跟著 aespa 環遊世界</title>
     <style>
         html, body { 
             height: 100%; 
@@ -126,13 +126,25 @@
     <div id="map"></div>
 
     <div id="sidebar">
-        <h2>跟著 aespa 全世界走透透 (目前共 <span id="location-count">0</span> 處)</h2>
+        <h2>跟著 aespa 環遊世界 (目前共 <span id="location-count">0</span> 處)</h2>
         
         <div style="margin-bottom: 15px; padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
             <label for="member-filter" style="font-weight: bold;">依成員篩選：</label>
             <select id="member-filter" style="width: 100%; padding: 8px; margin-top: 5px; border-radius: 4px;">
                 <option value="All">全部成員</option>
             </select>
+            
+            <label for="country-filter" style="font-weight: bold; display: block; margin-top: 10px;">國家:</label>
+            <select id="country-filter" onchange="handleCountryChange()" style="width: 100%; padding: 8px; margin-top: 5px; border-radius: 4px;">
+                <option value="">所有國家</option>
+            </select>
+
+            <label for="city-filter" style="font-weight: bold; display: block; margin-top: 10px;">地區/城市:</label>
+            <select id="city-filter" onchange="filterLocations()" style="width: 100%; padding: 8px; margin-top: 5px; border-radius: 4px;">
+                <option value="">所有地區/城市</option>
+            </select>
+
+            <button onclick="resetFilters()" style="margin-top: 10px; padding: 8px 15px; width: 100%; background-color: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer;">重設篩選</button>
         </div>
         <div id="locations-list">
         </div>
@@ -377,9 +389,9 @@
     }
 
     // =================================================================
-    // 4. 成員篩選功能 (維持不變)
+    // 4. 成員篩選功能 
     // =================================================================
-
+    
     function getAllMembers() {
         const allMembers = new Set();
         locationsData.forEach(location => {
@@ -389,7 +401,76 @@
         });
         return Array.from(allMembers).sort();
     }
+    
+    // 🌟 新增：填充國家篩選器 🌟
+    function populateCountryFilter() {
+        const countryFilter = document.getElementById('country-filter');
+        countryFilter.innerHTML = '<option value="">所有國家</option>';
 
+        const uniqueCountries = [...new Set(locationsData.map(loc => loc.country))].sort();
+
+        uniqueCountries.forEach(country => {
+            if (country) {
+                const option = document.createElement('option');
+                option.value = country;
+                option.textContent = country;
+                countryFilter.appendChild(option);
+            }
+        });
+        
+        // 初始化地區篩選器，顯示所有地點的城市
+        populateCityFilter(''); 
+    }
+
+    // 🌟 新增：填充地區/城市篩選器 (根據國家) 🌟
+    function populateCityFilter(country) {
+        const cityFilter = document.getElementById('city-filter');
+        cityFilter.innerHTML = '<option value="">所有地區/城市</option>'; 
+
+        let locationsToFilter = locationsData;
+        
+        // 如果選擇了國家，則只看該國家的地點
+        if (country) {
+            locationsToFilter = locationsData.filter(loc => loc.country === country);
+        }
+        
+        // 獲取唯一的地區/城市列表
+        const uniqueCities = [...new Set(locationsToFilter.map(loc => loc.city))].sort();
+
+        uniqueCities.forEach(city => {
+            if (city) {
+                const option = document.createElement('option');
+                option.value = city;
+                option.textContent = city;
+                cityFilter.appendChild(option);
+            }
+        });
+    }
+    
+    // 🌟 新增：處理國家選單變更事件 🌟
+    function handleCountryChange() {
+        const selectedCountry = document.getElementById('country-filter').value;
+
+        // 1. 根據選擇的國家，重新填充地區/城市選單
+        populateCityFilter(selectedCountry);
+        
+        // 2. 執行地點篩選
+        filterLocations();
+    }
+    
+    // 🌟 新增：重設所有篩選器 🌟
+    function resetFilters() {
+        document.getElementById('member-filter').value = 'All';
+        document.getElementById('country-filter').value = ''; 
+        document.getElementById('city-filter').value = ''; 
+        
+        // 確保地區選單被重新填充 (顯示所有國家下的所有城市)
+        populateCityFilter('');
+        
+        filterLocations();
+    }
+
+    // 🌟 更新：初始化所有篩選器 🌟
     function initFilters() {
         const memberFilter = document.getElementById('member-filter');
         const members = getAllMembers();
@@ -401,21 +482,43 @@
             memberFilter.appendChild(option);
         });
         
+        // 綁定成員篩選的事件
         memberFilter.addEventListener('change', filterLocations);
+        
+        // 初始化國家和地區篩選器
+        populateCountryFilter(); 
+        
+        // 初始篩選和渲染 (應在所有篩選器初始化後調用)
         filterLocations();
     }
 
+    // 🌟 更新：核心篩選邏輯 🌟
     function filterLocations() {
         const selectedMember = document.getElementById('member-filter').value;
+        const selectedCountry = document.getElementById('country-filter').value;
+        const selectedCity = document.getElementById('city-filter').value;
         let visibleCount = 0;
 
         locationsData.forEach(location => {
-            const shouldShow = (selectedMember === 'All') || location.members.includes(selectedMember);
+            // 檢查成員匹配
+            const memberMatch = (selectedMember === 'All') || location.members.includes(selectedMember);
             
+            // 檢查國家匹配
+            const countryMatch = !selectedCountry || location.country === selectedCountry;
+            
+            // 檢查地區/城市匹配
+            const cityMatch = !selectedCity || location.city === selectedCity;
+            
+            // 必須同時滿足所有條件
+            const shouldShow = memberMatch && countryMatch && cityMatch;
+            
+            // 更新地圖標記的顯示狀態
             location.marker.setVisible(shouldShow);
             
+            // 更新側邊欄卡片的顯示狀態
             const cardElement = document.getElementById(`card-${location.lat}-${location.lng}`);
             if (cardElement) {
+                // 如果顯示，使用 'flex' 來保持原有的 CSS 佈局
                 cardElement.style.display = shouldShow ? 'flex' : 'none';
             }
             
@@ -426,7 +529,6 @@
         
         document.getElementById('location-count').textContent = visibleCount;
     }
-
     // =================================================================
     // 5. 載入 Google Maps 函式庫 
     // =================================================================
