@@ -14,14 +14,14 @@
         }
         
         #app-container {
-            height: 100%; /* 佔滿 body 高度 */
+            height: 100%; 
             display: flex;
             max-height: 100vh; 
             overflow: hidden; 
         }
         
         #map {
-            flex-grow: 1; /* 地圖佔據剩餘空間 */
+            flex-grow: 1; 
             min-height: 50vh; 
             min-width: 0;
         }
@@ -42,20 +42,15 @@
             margin-bottom: 15px;
             padding: 15px;
             cursor: pointer;
-            transition: background-color 0.3s;
-            
-            /* 確保寬度分配可以運作 */
             display: flex;
-            justify-content: space-between; /* 文字靠左，圖片靠右 */
-            align-items: flex-start; /* 頂部對齊 */
+            justify-content: space-between; 
+            align-items: flex-start; 
         }
         .card-text-content {
-        /* 設置固定寬度比例，使其與圖片分配空間 */
             width: 60%; 
             flex-grow: 0; 
-            flex-shrink: 0; /* 阻止文字區塊被圖片擠壓 */
+            flex-shrink: 0; 
             margin-right: 15px;
-            /* 確保長標題能換行 */
             overflow-wrap: break-word; 
             word-wrap: break-word;
         }
@@ -64,21 +59,19 @@
         }
         .location-card strong { 
             display: block; 
-            font-size: 20px; /* 增大標題字體 */
+            font-size: 20px; 
             margin-bottom: 5px; 
             color: #333; 
-            /* 確保長標題能換行 */
             overflow-wrap: break-word; 
             word-wrap: break-word;
         }
         .location-card img {
-            width: 35%; /* 確保總和 (60% + 35%) < 100%，留下 margin 空間 */
+            width: 35%; 
             height: auto;
-            object-fit: contain; /* 確保圖片不被拉伸，填滿容器 */
-            flex-shrink: 0; /* 防止圖片被壓縮 */
+            object-fit: contain; 
+            flex-shrink: 0; 
             border-radius: 4px;
             margin: 0; 
-            /* 確保圖片不會超出容器的 max-width */
             max-width: 100%;
         }
         .card-line {
@@ -89,18 +82,18 @@
         }
 
         .card-link{
-            display: block;
-            margin-top: 6px;
-            font-size: 18px;     
+            display: inline-block;
+            margin-top: 0;
+            margin-right: 15px;
+            font-size: 18px; 
             line-height: 1.4;
         }
         .info-window-content{
-            font-size: 20px;    
+            font-size: 20px;
         }
         .info-window-line{
-            font-size: 18px;    
+            font-size: 18px;
         }
-
 
         /* 響應式設計：針對手機螢幕 */
         @media (max-width: 768px) {
@@ -146,53 +139,67 @@
 
             <button onclick="resetFilters()" style="margin-top: 10px; padding: 8px 15px; width: 100%; background-color: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer;">重設篩選</button>
         </div>
+
         <div id="locations-list">
         </div>
     </div>
 </div>
 
 <script>
+    // =================================================================
+    // 建立 Google Maps 導航 URL
+    // =================================================================
     /**
-     * 綁定輪播容器的點擊事件
+     * 建立 Google Maps 導航 URL (用於跳轉到外部 App 或網頁)
+     * @param {number} lat - 目的地緯度
+     * @param {number} lng - 目的地經度
+     * @returns {string} - Google Maps Directions URL
+     */
+    function createNavigationUrl(lat, lng) {
+        // 使用 'q=' 查詢目的地座標。
+        // 當 'saddr' (起點) 留空時，Google Maps App 會自動使用使用者當前位置。
+        return `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`;
+    }
+
+    /**
+     * 綁定輪播容器的點擊事件 (維持不變)
      */
     function bindCarouselEvents() {
         document.querySelectorAll('.image-carousel').forEach(carousel => {
             carousel.addEventListener('click', (event) => {
-                // 阻止點擊事件向上傳播到卡片本身 (防止觸發地圖定位)
                 event.stopPropagation(); 
                 
                 const locationIndex = parseInt(carousel.dataset.locationIndex);
                 const locationData = locationsData[locationIndex];
                 const imageUrls = locationData.ig_img_urls;
                 
-                if (imageUrls.length <= 1) return; // 單張圖片則無需切換
+                if (imageUrls.length <= 1) return; 
 
                 let currentIndex = parseInt(carousel.dataset.currentImg);
                 
-                // 計算下一張圖片的索引 (循環切換)
                 currentIndex = (currentIndex + 1) % imageUrls.length;
                 
-                // 更新圖片源 (src)
                 const imgElement = carousel.querySelector('img');
                 imgElement.src = imageUrls[currentIndex];
                 
-                // 更新數據屬性
                 carousel.dataset.currentImg = currentIndex;
             });
         });
     }
+
     // =================================================================
     // 成員顏色定義
     // =================================================================
     const MEMBER_INFO = {
-        "Karina": { color: "blue", symbol: "💙" }, // 愛心
-        "Giselle": { color: "pink", symbol: "🌙" }, // 月亮
-        "Winter": { color: "white", symbol: "⭐" }, // 星星
-        "Ningning": { color: "purple", symbol: "🦋" }, // 蝴蝶
-        "Default": { color: "orange", symbol: "🔮" } // 用於多成員
+        "Karina": { color: "blue", symbol: "💙" }, 
+        "Giselle": { color: "pink", symbol: "🌙" }, 
+        "Winter": { color: "white", symbol: "⭐" }, 
+        "Ningning": { color: "purple", symbol: "🦋" }, 
+        "Default": { color: "orange", symbol: "🔮" } 
     };
+    
     // =================================================================
-    // 1. 數據宣告 (變為空陣列，等待從 JSON 檔案載入)
+    // 1. 數據宣告
     // =================================================================
     let locationsData = [];
 
@@ -203,15 +210,13 @@
     let infoWindow; 
 
     /**
-     * 載入數據並初始化地圖的主要函式 
+     * 載入數據並初始化地圖的主要函式
      */
     async function loadDataAndInitMap() {
         try {
-            // 1. 使用 Fetch API 讀取 locations.json 檔案
             const response = await fetch('locations.json'); 
-            locationsData = await response.json(); // 將 JSON 數據賦值給 locationsData 陣列
+            locationsData = await response.json(); 
 
-            // 2. 初始化地圖 (原 initMap 內的邏輯)
             infoWindow = new google.maps.InfoWindow(); 
             const bounds = new google.maps.LatLngBounds(); 
             const initialCenter = { lat: 35.6762, lng: 139.6503 }; 
@@ -220,13 +225,13 @@
                 zoom: 10,
                 center: initialCenter,
                 mapTypeId: 'roadmap',
-                // 這裡可以貼入您最後確認有效的 styles 陣列
                 styles: [
                     { featureType: "poi", stylers: [{ visibility: "off" }] },
                     { featureType: "transit", elementType: "labels", stylers: [{ visibility: "off" }] }
                 ]
             });
             
+            // 處理標記
             locationsData.forEach(location => {
                 addMarker(location);
                 bounds.extend({ lat: location.lat, lng: location.lng });
@@ -243,34 +248,25 @@
             
             google.maps.event.trigger(map, 'resize');
             
-            // 3. 處理篩選和列表 (確保它們在數據載入後執行)
             document.getElementById('location-count').textContent = locationsData.length;
             renderSidebarList();
             initFilters(); 
 
         } catch (error) {
             console.error("❌ 載入數據或初始化地圖失敗！", error);
-            // 可以在地圖或側邊欄顯示錯誤訊息
         }
     }
 
-    /**
-     * 根據成員名稱獲取顏色和符號資訊
-     * @param {Array<string>} members - 地點相關的成員列表
-     * @returns {Object} 包含 color 和 symbol 的物件
-     */
     function getMemberInfo(members) {
-        // 如果只有一位成員，返回該成員的顏色和符號
         if (members.length === 1) {
             const member = members[0].trim();
             return MEMBER_INFO[member] || MEMBER_INFO.Default;
         }
-        // 如果是多位成員或成員列表為空，則返回預設色
         return MEMBER_INFO.Default;
     }
 
     /**
-     * 在地圖上放置一個標記 (使用預設標記)
+     * 在地圖上放置一個標記
      * @param {Object} location - 地點數據物件
      */
     function addMarker(location) {
@@ -284,14 +280,14 @@
         const firstImageUrl = imageUrls.length > 0 ? imageUrls[0] : '';
         const isImageValid = firstImageUrl && firstImageUrl !== '請自行尋找照片 URL';
         
-        // 獲取所有成員的資訊 (用於 InfoWindow)
         const membersWithSymbols = location.members.map(member => {
             const info = MEMBER_INFO[member.trim()] || MEMBER_INFO.Default;
-            // 顯示為： 💙 Karina
             return `${info.symbol} ${member.trim()}`;
-        }).join('<br>'); // 使用 <br> 讓多個成員在 InfoWindow 中換行
+        }).join('<br>'); 
+        
+        // 🌟 外部導航 URL
+        const navUrl = createNavigationUrl(location.lat, location.lng);
 
-        // 點擊標記時，顯示資訊視窗
         marker.addListener("click", () => {
             
             const content = `
@@ -304,7 +300,7 @@
                     <h4>${location.name}</h4>
                     <div class="info-window-line"><strong>成員：</strong><br> ${membersWithSymbols}</div> 
                     <div class="info-window-line"><strong>發文日期：</strong> ${location.date}</div>
-                    <div class="info-window-line"><strong>備註：</strong> ${location.note}</div>
+                    <div class="info-window-line"><strong>備註：</strong> ${location.note}</div>                    
                 </div>
             `;
             
@@ -321,13 +317,17 @@
     }
 
     // =================================================================
-    // 3. 側邊欄列表渲染 
+    // 3. 側邊欄列表渲染 (簡化卡片內容)
     // =================================================================
     function renderSidebarList() {
         const listContainer = document.getElementById('locations-list');
         listContainer.innerHTML = ''; 
 
-        locationsData.forEach((location, index) => { // 加入 index 
+        locationsData.forEach((location, index) => { 
+            if (location.marker && !location.marker.getVisible()) {
+                return;
+            }
+
             const card = document.createElement('div');
             card.id = `card-${location.lat}-${location.lng}`; 
             card.className = 'location-card';
@@ -337,11 +337,14 @@
                 return info.symbol;
             });
             const symbolDisplay = symbolsArray.join(' '); 
-            // ------------------------------------
             
-            // 獲取圖片陣列
             const imageUrls = location.ig_img_urls || [];
             const isImageValid = imageUrls.length > 0;
+
+            // 外部導航 URL
+            const navUrl = createNavigationUrl(location.lat, location.lng);
+            
+            card.style.display = 'flex';
 
             card.innerHTML = `
                 <div class="card-text-content">
@@ -350,9 +353,12 @@
                     <div class="card-line">成員: ${location.members.join(', ')}</div> 
                     <div class="card-line">發文日期: ${location.date}</div>
                     <div class="card-line">備註: ${location.note}</div>
-                    <a class="card-link" href="${location.ig_post_url}" target="_blank">🔗 IG 貼文連結</a>
+
+                    <div style="margin-top: 6px;">
+                    <a class="card-link" href="${location.ig_post_url}" target="_blank">🔗 貼文連結</a>
+                    <a class="card-link" href="${navUrl}" target="_blank" >📍 導航</a>
+                    </div>
                 </div>
-                
                 ${isImageValid 
                     ? `
                     <div 
@@ -374,9 +380,16 @@
                     : ''}
             `;
             
-            // 點擊卡片時，觸發地圖標記的點擊事件
-            card.addEventListener('click', () => {
+            // 點擊卡片主體時，觸發 InfoWindow 並放大地圖，不執行複雜邏輯
+            card.addEventListener('click', (e) => {
+                // 檢查點擊是否發生在 action-button, a 或輪播上
+                if (e.target.closest('.btn-navigate') || e.target.tagName.toLowerCase() === 'a' || e.target.closest('.image-carousel')) {
+                    return; 
+                }
+                
+                // 讓 InfoWindow 彈出
                 google.maps.event.trigger(location.marker, 'click');
+
                 map.setCenter(location.marker.getPosition());
                 map.setZoom(14); 
             });
@@ -384,14 +397,13 @@
             listContainer.appendChild(card);
         });
         
-        // 將點擊事件綁定到所有輪播容器
         bindCarouselEvents();
     }
 
     // =================================================================
-    // 4. 成員篩選功能 
+    // 4. 篩選功能
     // =================================================================
-    
+
     function getAllMembers() {
         const allMembers = new Set();
         locationsData.forEach(location => {
@@ -402,7 +414,6 @@
         return Array.from(allMembers).sort();
     }
     
-    // 🌟 新增：填充國家篩選器 🌟
     function populateCountryFilter() {
         const countryFilter = document.getElementById('country-filter');
         countryFilter.innerHTML = '<option value="">所有國家</option>';
@@ -418,23 +429,19 @@
             }
         });
         
-        // 初始化地區篩選器，顯示所有地點的城市
         populateCityFilter(''); 
     }
 
-    // 🌟 新增：填充地區/城市篩選器 (根據國家) 🌟
     function populateCityFilter(country) {
         const cityFilter = document.getElementById('city-filter');
         cityFilter.innerHTML = '<option value="">所有地區/城市</option>'; 
 
         let locationsToFilter = locationsData;
         
-        // 如果選擇了國家，則只看該國家的地點
         if (country) {
             locationsToFilter = locationsData.filter(loc => loc.country === country);
         }
         
-        // 獲取唯一的地區/城市列表
         const uniqueCities = [...new Set(locationsToFilter.map(loc => loc.city))].sort();
 
         uniqueCities.forEach(city => {
@@ -447,30 +454,22 @@
         });
     }
     
-    // 🌟 新增：處理國家選單變更事件 🌟
     function handleCountryChange() {
         const selectedCountry = document.getElementById('country-filter').value;
-
-        // 1. 根據選擇的國家，重新填充地區/城市選單
         populateCityFilter(selectedCountry);
-        
-        // 2. 執行地點篩選
         filterLocations();
     }
     
-    // 🌟 新增：重設所有篩選器 🌟
     function resetFilters() {
         document.getElementById('member-filter').value = 'All';
         document.getElementById('country-filter').value = ''; 
         document.getElementById('city-filter').value = ''; 
         
-        // 確保地區選單被重新填充 (顯示所有國家下的所有城市)
         populateCityFilter('');
         
         filterLocations();
     }
 
-    // 🌟 更新：初始化所有篩選器 🌟
     function initFilters() {
         const memberFilter = document.getElementById('member-filter');
         const members = getAllMembers();
@@ -482,43 +481,33 @@
             memberFilter.appendChild(option);
         });
         
-        // 綁定成員篩選的事件
         memberFilter.addEventListener('change', filterLocations);
         
-        // 初始化國家和地區篩選器
         populateCountryFilter(); 
         
-        // 初始篩選和渲染 (應在所有篩選器初始化後調用)
         filterLocations();
     }
 
-    // 🌟 更新：核心篩選邏輯 🌟
     function filterLocations() {
         const selectedMember = document.getElementById('member-filter').value;
         const selectedCountry = document.getElementById('country-filter').value;
         const selectedCity = document.getElementById('city-filter').value;
         let visibleCount = 0;
 
+        infoWindow.close();
+
+
         locationsData.forEach(location => {
-            // 檢查成員匹配
             const memberMatch = (selectedMember === 'All') || location.members.includes(selectedMember);
-            
-            // 檢查國家匹配
             const countryMatch = !selectedCountry || location.country === selectedCountry;
-            
-            // 檢查地區/城市匹配
             const cityMatch = !selectedCity || location.city === selectedCity;
             
-            // 必須同時滿足所有條件
             const shouldShow = memberMatch && countryMatch && cityMatch;
             
-            // 更新地圖標記的顯示狀態
             location.marker.setVisible(shouldShow);
             
-            // 更新側邊欄卡片的顯示狀態
             const cardElement = document.getElementById(`card-${location.lat}-${location.lng}`);
             if (cardElement) {
-                // 如果顯示，使用 'flex' 來保持原有的 CSS 佈局
                 cardElement.style.display = shouldShow ? 'flex' : 'none';
             }
             
@@ -529,15 +518,15 @@
         
         document.getElementById('location-count').textContent = visibleCount;
     }
+
     // =================================================================
     // 5. 載入 Google Maps 函式庫 
     // =================================================================
     const script = document.createElement('script');
-    script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyDGZujGgC207RjOC7AkNsAj4EmCQWkPt68&callback=loadDataAndInitMap`;
+    script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyDGZujGgC207RjOC7AkNsAj4EmCQWkPt68&callback=loadDataAndInitMap`; 
     script.async = true;
     document.head.appendChild(script);
 
-    // 將新的載入函式暴露給全域環境
     window.loadDataAndInitMap = loadDataAndInitMap;
     
 </script>
