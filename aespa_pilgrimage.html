@@ -27,7 +27,7 @@
         }
         
         #sidebar {
-            width: 40%;
+            width: 35%;
             max-height: 100vh;
             overflow-y: auto; 
             background-color: white;
@@ -94,6 +94,19 @@
         .info-window-line{
             font-size: 18px;
         }
+        /* 外部導航按鈕樣式 */
+        .btn-navigate { 
+            display: block;
+            width: 100%;
+            margin-top: 10px;
+            padding: 8px 15px;
+            background-color: #007bff; /* 藍色 */
+            color: white;
+            border-radius: 4px;
+            text-decoration: none;
+            text-align: center;
+            font-weight: bold;
+        }
 
         /* 響應式設計：針對手機螢幕 */
         @media (max-width: 768px) {
@@ -121,7 +134,16 @@
     <div id="sidebar">
         <h2>跟著 aespa 環遊世界 (目前共 <span id="location-count">0</span> 處)</h2>
         
-        <div style="margin-bottom: 15px; padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
+<div style="margin-bottom: 15px; padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
+            
+            <label for="toggle-sort-button" style="font-weight: bold; display: block; margin-top: 5px;">發文日期排序:</label>
+            <button id="toggle-sort-button" onclick="toggleSortOrder()" 
+                    style="width: 100%; padding: 8px; margin-top: 5px; border-radius: 4px; background-color: #f7a300; color: white; border: none; cursor: pointer; font-weight: bold;">
+                ↓ 最新發文日期
+            </button>
+            
+            <hr style="border: 0; border-top: 1px solid #eee; margin: 15px 0;">
+
             <label for="member-filter" style="font-weight: bold;">依成員篩選：</label>
             <select id="member-filter" style="width: 100%; padding: 8px; margin-top: 5px; border-radius: 4px;">
                 <option value="All">全部成員</option>
@@ -146,23 +168,34 @@
 </div>
 
 <script>
-    // =================================================================
-    // 建立 Google Maps 導航 URL
-    // =================================================================
-    /**
-     * 建立 Google Maps 導航 URL (用於跳轉到外部 App 或網頁)
-     * @param {number} lat - 目的地緯度
-     * @param {number} lng - 目的地經度
-     * @returns {string} - Google Maps Directions URL
+     /**
+     * 根據 URL 網址判斷顯示類型
+     * @param {string} url - 來源網址
+     * @returns {string} - 顯示的文字和符號
      */
+    function getUrlDisplayType(url) {
+        if (url.includes('instagram.com')) {
+            return '🔗 IG 貼文';
+        }
+        if (url.includes('youtube.com') || url.includes('youtu.be')) {
+            return '▶️ YouTube';
+        }
+        return '🌐 外部';
+    }
+    // =================================================================
+    // 全域變數：追蹤排序狀態 
+    // =================================================================
+    let currentSortOrder = 'newest'; // 'newest' 或 'oldest'
+
+    // =================================================================
+    // 建立 Google Maps 導航 URL 
+    // =================================================================
     function createNavigationUrl(lat, lng) {
-        // 使用 'q=' 查詢目的地座標。
-        // 當 'saddr' (起點) 留空時，Google Maps App 會自動使用使用者當前位置。
         return `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`;
     }
 
     /**
-     * 綁定輪播容器的點擊事件 (維持不變)
+     * 綁定輪播容器的點擊事件
      */
     function bindCarouselEvents() {
         document.querySelectorAll('.image-carousel').forEach(carousel => {
@@ -209,9 +242,6 @@
     let map;
     let infoWindow; 
 
-    /**
-     * 載入數據並初始化地圖的主要函式
-     */
     async function loadDataAndInitMap() {
         try {
             const response = await fetch('locations.json'); 
@@ -231,7 +261,6 @@
                 ]
             });
             
-            // 處理標記
             locationsData.forEach(location => {
                 addMarker(location);
                 bounds.extend({ lat: location.lat, lng: location.lng });
@@ -265,10 +294,6 @@
         return MEMBER_INFO.Default;
     }
 
-    /**
-     * 在地圖上放置一個標記
-     * @param {Object} location - 地點數據物件
-     */
     function addMarker(location) {
         const marker = new google.maps.Marker({
             position: { lat: location.lat, lng: location.lng },
@@ -285,7 +310,6 @@
             return `${info.symbol} ${member.trim()}`;
         }).join('<br>'); 
         
-        // 🌟 外部導航 URL
         const navUrl = createNavigationUrl(location.lat, location.lng);
 
         marker.addListener("click", () => {
@@ -300,7 +324,10 @@
                     <h4>${location.name}</h4>
                     <div class="info-window-line"><strong>成員：</strong><br> ${membersWithSymbols}</div> 
                     <div class="info-window-line"><strong>發文日期：</strong> ${location.date}</div>
-                    <div class="info-window-line"><strong>備註：</strong> ${location.note}</div>                    
+                    <div class="info-window-line"><strong>備註：</strong> ${location.note}</div> 
+                    <a href="${navUrl}" target="_blank" class="btn-navigate">
+                        📍 導航到 App/網頁 (從我的位置)
+                    </a>
                 </div>
             `;
             
@@ -317,7 +344,7 @@
     }
 
     // =================================================================
-    // 3. 側邊欄列表渲染 (簡化卡片內容)
+    // 3. 側邊欄列表渲染
     // =================================================================
     function renderSidebarList() {
         const listContainer = document.getElementById('locations-list');
@@ -337,11 +364,23 @@
                 return info.symbol;
             });
             const symbolDisplay = symbolsArray.join(' '); 
-            
-            const imageUrls = location.ig_img_urls || [];
-            const isImageValid = imageUrls.length > 0;
 
-            // 外部導航 URL
+            const imageUrls = location.ig_img_urls || [];
+            const firstImageUrl = imageUrls.length > 0 ? imageUrls[0] : '';
+            const isImageValid = firstImageUrl && firstImageUrl !== '請自行尋找照片 URL';
+            
+            // 處理多個來源網址
+            const sourceUrlString = location.ig_post_url || '';
+            // 拆分字串為陣列，並清理空格
+            const sourceUrls = sourceUrlString.split(',').map(url => url.trim()).filter(url => url); 
+            
+            // 根據來源類型生成連結 HTML (只有當 URL 有效時才生成)
+            const sourceLinksHTML = sourceUrls.map((url, i) => {
+                const displayType = getUrlDisplayType(url);
+                return `<a class="card-link" href="${url}" target="_blank">${displayType} 連結 ${i+1}</a>`;
+            }).join(''); 
+            
+            // 外部導航 URL (即使沒有來源連結，導航連結通常也應顯示，因為座標是有的)
             const navUrl = createNavigationUrl(location.lat, location.lng);
             
             card.style.display = 'flex';
@@ -353,12 +392,13 @@
                     <div class="card-line">成員: ${location.members.join(', ')}</div> 
                     <div class="card-line">發文日期: ${location.date}</div>
                     <div class="card-line">備註: ${location.note}</div>
-
+                    
                     <div style="margin-top: 6px;">
-                    <a class="card-link" href="${location.ig_post_url}" target="_blank">🔗 貼文連結</a>
-                    <a class="card-link" href="${navUrl}" target="_blank" >📍 導航</a>
+                        ${sourceLinksHTML ? sourceLinksHTML : ''}
+                        <a class="card-link" href="${navUrl}" target="_blank" >📍 導航</a>
                     </div>
                 </div>
+                
                 ${isImageValid 
                     ? `
                     <div 
@@ -380,14 +420,11 @@
                     : ''}
             `;
             
-            // 點擊卡片主體時，觸發 InfoWindow 並放大地圖，不執行複雜邏輯
             card.addEventListener('click', (e) => {
-                // 檢查點擊是否發生在 action-button, a 或輪播上
-                if (e.target.closest('.btn-navigate') || e.target.tagName.toLowerCase() === 'a' || e.target.closest('.image-carousel')) {
+                if (e.target.tagName.toLowerCase() === 'a' || e.target.closest('.image-carousel')) {
                     return; 
                 }
                 
-                // 讓 InfoWindow 彈出
                 google.maps.event.trigger(location.marker, 'click');
 
                 map.setCenter(location.marker.getPosition());
@@ -401,8 +438,29 @@
     }
 
     // =================================================================
-    // 4. 篩選功能
+    // 4. 篩選功能 (包含日期排序)
     // =================================================================
+
+    // 切換排序狀態函式
+    function toggleSortOrder() {
+        // 反轉排序狀態
+        currentSortOrder = currentSortOrder === 'newest' ? 'oldest' : 'newest';
+        
+        const button = document.getElementById('toggle-sort-button');
+        
+        // 更新按鈕文字
+        if (currentSortOrder === 'newest') {
+            button.textContent = '↓ 最新發文日期';
+            button.style.backgroundColor = '#f7a300';
+        } else {
+            button.textContent = '↑ 最舊發文日期';
+            button.style.backgroundColor = '#4CAF50';
+        }
+
+        // 重新執行篩選和排序
+        filterLocations();
+    }
+
 
     function getAllMembers() {
         const allMembers = new Set();
@@ -465,6 +523,12 @@
         document.getElementById('country-filter').value = ''; 
         document.getElementById('city-filter').value = ''; 
         
+        // 重設日期排序狀態
+        currentSortOrder = 'newest';
+        const button = document.getElementById('toggle-sort-button');
+        button.textContent = '↓ 最新發文日期';
+        button.style.backgroundColor = '#f7a300';
+        
         populateCityFilter('');
         
         filterLocations();
@@ -483,6 +547,9 @@
         
         memberFilter.addEventListener('change', filterLocations);
         
+        // 確保按鈕在初始化時顯示正確的預設狀態
+        document.getElementById('toggle-sort-button').textContent = '↓ 最新發文日期';
+        
         populateCountryFilter(); 
         
         filterLocations();
@@ -492,11 +559,34 @@
         const selectedMember = document.getElementById('member-filter').value;
         const selectedCountry = document.getElementById('country-filter').value;
         const selectedCity = document.getElementById('city-filter').value;
-        let visibleCount = 0;
+        // 獲取全域變數中的排序狀態
+        const dateSortOrder = currentSortOrder; 
 
+        // 1. 應用排序 (改變 locationsData 的排列順序)
+        locationsData.sort((a, b) => {
+            // 清理日期字串：將 'YYYY年MM月DD日' 格式轉換為 'YYYY/MM/DD'
+            const cleanedDateA = a.date.replace(/年|月/g, '/').replace(/日/g, '');
+            const cleanedDateB = b.date.replace(/年|月/g, '/').replace(/日/g, '');
+            
+            const dateA = new Date(cleanedDateA);
+            const dateB = new Date(cleanedDateB);
+
+            if (isNaN(dateA) || isNaN(dateB)) {
+                return 0;
+            }
+
+            if (dateSortOrder === 'oldest') {
+                return dateA - dateB; // 最舊的日期在前
+            } else {
+                return dateB - dateA; // 最新的日期在前
+            }
+        });
+
+        let visibleCount = 0;
         infoWindow.close();
 
 
+        // 2. 應用可見性篩選 (決定哪些 Marker 要顯示)
         locationsData.forEach(location => {
             const memberMatch = (selectedMember === 'All') || location.members.includes(selectedMember);
             const countryMatch = !selectedCountry || location.country === selectedCountry;
@@ -506,17 +596,15 @@
             
             location.marker.setVisible(shouldShow);
             
-            const cardElement = document.getElementById(`card-${location.lat}-${location.lng}`);
-            if (cardElement) {
-                cardElement.style.display = shouldShow ? 'flex' : 'none';
-            }
-            
             if (shouldShow) {
                 visibleCount++;
             }
         });
         
         document.getElementById('location-count').textContent = visibleCount;
+        
+        // 3. 重新渲染側邊欄清單 (根據新的排序和可見性)
+        renderSidebarList();
     }
 
     // =================================================================
