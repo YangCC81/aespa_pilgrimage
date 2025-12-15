@@ -1,0 +1,106 @@
+html, body { 
+    height: 100%; 
+    margin: 0; 
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+    background-color: #f4f4f4;
+}
+
+#app-container {
+    height: 100%; 
+    display: flex;
+    max-height: 100vh; 
+    overflow: hidden; 
+}
+
+#map {
+    flex-grow: 1; 
+    min-height: 50vh; 
+    min-width: 0;
+}
+
+#sidebar {
+    width: 35%;
+    max-height: 100vh;
+    overflow-y: auto; 
+    background-color: white;
+    padding: 20px;
+    box-shadow: -2px 0 5px rgba(0,0,0,0.1);
+}
+
+h2 { color: #5a5a5a; border-bottom: 2px solid #eee; padding-bottom: 10px; margin-top: 0; }
+.location-card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    padding: 15px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between; 
+    align-items: flex-start; 
+}
+.card-text-content {
+    width: 60%; 
+    flex-grow: 0; 
+    flex-shrink: 0; 
+    margin-right: 15px;
+    overflow-wrap: break-word; 
+    word-wrap: break-word;
+}
+.location-card:hover {
+    background-color: #f9f9f9;
+}
+.location-card strong { 
+    display: block; 
+    font-size: 1.5vw; 
+    margin-bottom: 5px; 
+    color: #333; 
+    overflow-wrap: break-word; 
+    word-wrap: break-word;
+}
+.location-card img {
+    width: 35%; 
+    height: auto;
+    object-fit: contain; 
+    flex-shrink: 0; 
+    border-radius: 4px;
+    margin: 0; 
+    max-width: 100%;
+}
+.card-line {
+    display: block;
+    font-size: 1.3vw;
+    color: #666;
+    line-height: 1.4;
+}
+
+.card-link{
+    display: inline-block;
+    margin-top: 0;
+    margin-right: 15px;
+    font-size: 1.3vw; 
+    line-height: 1.4;
+}
+.info-window-content{
+    font-size: 1.5vw;
+}
+.info-window-line{
+    font-size: 1.3vw;
+}
+
+/* 響應式設計：針對手機螢幕 */
+@media (max-width: 768px) {
+    #app-container {
+        flex-direction: column; 
+        height: auto;
+    }
+    #sidebar {
+        width: auto;
+        max-height: 45vh; 
+        order: 2; 
+    }
+    #map {
+        height: 55vh; 
+        order: 1;
+    }
+}

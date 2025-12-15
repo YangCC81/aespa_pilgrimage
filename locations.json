@@ -28,8 +28,8 @@
     "country": "日本",
     "city": "東京",
     "name": "王子ホールディングス(株)",
-    "lat": 35.671267824883,
-    "lng": 139.76641745307248,
+    "lat": 35.67160646995951,
+    "lng": 139.76644036266325,
     "members": [
       "Karina"
     ],
@@ -70,8 +70,8 @@
     "country": "日本",
     "city": "福岡",
     "name": "アクロス福岡前",
-    "lat": 33.59200210776174,
-    "lng": 130.4024378306854,
+    "lat": 33.59182654750492,
+    "lng": 130.40176242814604,
     "members": [
       "Karina"
     ],
@@ -90,13 +90,13 @@
     "country": "日本",
     "city": "福岡",
     "name": "中洲の西大橋",
-    "lat": 33.59192978796356,
-    "lng": 130.40486856132858,
+    "lat": 33.59270008108777, 
+    "lng": 130.40413269801894,
     "members": [
       "Karina"
     ],
     "date": "2025年3月13日",
-    "note": "【待定位】此地點線索不足，需進行反覆查證。",
+    "note": "背對為福博であい橋",
     "ig_post_url": "https://www.instagram.com/p/DPvxP3MEtN4/",
     "ig_img_urls": [
         "images/K/karina_Fukuoka_1.jpg"
@@ -144,32 +144,48 @@
       "Giselle"
     ],
     "date": "2025年6月16日",
-    "note": "【待定位】此地點線索不足，需進行反覆查證。疑似有去ネオパークオキナワ",
+    "note": "",
     "ig_post_url": "https://www.instagram.com/p/DK8k6kPSfVb/",
     "ig_img_urls": [
       "images/G/giselle_okinawa_2.jpg",
+      "images/G/giselle_okinawa_8.jpg",
+      "images/G/giselle_okinawa_9.jpg",
+      "images/G/giselle_okinawa_12.jpg",
+      "images/G/giselle_okinawa_13.jpg",
+      "images/G/giselle_okinawa_14.jpg",
+      "images/G/giselle_okinawa_15.jpg",
+      "images/G/giselle_okinawa_16.jpg",
+      "images/G/giselle_okinawa_17.jpg"
+    ]
+  },
+    {
+    "country": "日本",
+    "city": "沖繩",
+    "name": "ネオパークオキナワ",
+    "lat": 26.610633299805198, 
+    "lng": 127.99149813820337,
+    "members": [
+      "Giselle"
+    ],
+    "date": "2025年6月16日",
+    "note": "",
+    "ig_post_url": "https://www.instagram.com/p/DK8k6kPSfVb/",
+    "ig_img_urls": [
       "images/G/giselle_okinawa_3.jpg",
       "images/G/giselle_okinawa_4.jpg",
       "images/G/giselle_okinawa_5.jpg",
       "images/G/giselle_okinawa_6.jpg",
       "images/G/giselle_okinawa_7.jpg",
-      "images/G/giselle_okinawa_8.jpg",
-      "images/G/giselle_okinawa_9.jpg",
       "images/G/giselle_okinawa_10.jpg",
-      "images/G/giselle_okinawa_11.jpg",
-      "images/G/giselle_okinawa_12.jpg",
-      "images/G/giselle_okinawa_13.jpggiselle_okinawa_14.jpg",
-      "images/G/giselle_okinawa_15.jpg",
-      "images/G/giselle_okinawa_16.jpg",
-      "images/G/giselle_okinawa_17.jpg"
+      "images/G/giselle_okinawa_11.jpg"
     ]
   },
   {
     "country": "日本",
     "city": "東京",
     "name": "株式会社水橋前",
-    "lat": 35.66339528329161,
-    "lng": 139.73696308465512,
+    "lat": 35.663533153970064,
+    "lng": 139.73719067240978,
     "members": [
       "Giselle"
     ],
@@ -190,26 +206,88 @@
   {
     "country": "日本",
     "city": "東京",
-    "name": "大森南四丁目公園 周辺",
-    "lat": 35.56738190520541,
-    "lng": 139.74676325401742,
+    "name": "大森南四丁目公園(靠著欄杆)",
+    "lat": 35.565840241182364,
+    "lng": 139.7452220711997,
     "members": [
       "Winter"
     ],
     "date": "2025年8月18日",
-    "note": "",
+    "note": "靠著欄杆臭屁中",
     "ig_post_url": "https://www.instagram.com/p/DNe61tPT_hG/",
     "ig_img_urls": [
       "images/W/winter_tokyo_5.jpg",
       "images/W/winter_tokyo_6.jpg",
       "images/W/winter_tokyo_7.jpg",
-      "images/W/winter_tokyo_8.jpg",
-      "images/W/winter_tokyo_9.jpg",
-      "images/W/winter_tokyo_10.jpg",
+      "images/W/winter_tokyo_10.jpg"
+    ]
+  },
+  {
+    "country": "日本",
+    "city": "東京",
+    "name": "大森南四丁目公園(望向路口)",
+    "lat": 35.56572084238156,
+    "lng": 139.74524942151984,
+    "members": [
+      "Winter"
+    ],
+    "date": "2025年8月18日",
+    "note": "望向路口",
+    "ig_post_url": "https://www.instagram.com/p/DNe61tPT_hG/",
+    "ig_img_urls": [
+      "images/W/winter_tokyo_8.jpg"
+    ]
+  },
+  {
+    "country": "日本",
+    "city": "東京",
+    "name": "大森南四丁目公園(紅色圍牆)",
+    "lat": 35.565670738552896,
+    "lng": 139.74592874021192,
+    "members": [
+      "Winter"
+    ],
+    "date": "2025年8月18日",
+    "note": "坐在紅色圍牆",
+    "ig_post_url": "https://www.instagram.com/p/DNe61tPT_hG/",
+    "ig_img_urls": [
+      "images/W/winter_tokyo_9.jpg"
+    ]
+  },
+  {
+    "country": "日本",
+    "city": "東京",
+    "name": "大森南四丁目公園 周辺",
+    "lat": 35.565670738552896,
+    "lng": 139.74592874021192,
+    "members": [
+      "Winter"
+    ],
+    "date": "2025年8月18日",
+    "note": "站在哪拍的",
+    "ig_post_url": "https://www.instagram.com/p/DNe61tPT_hG/",
+    "ig_img_urls": [
       "images/W/winter_tokyo_11.jpg",
       "images/W/winter_tokyo_12.jpg",
       "images/W/winter_tokyo_13.jpg",
       "images/W/winter_tokyo_14.jpg"
+    ]
+  },
+  {
+    "country": "日本",
+    "city": "東京",
+    "name": "大森南四丁目公園 周辺",
+    "lat": 35.565670738552896,
+    "lng": 139.74592874021192,
+    "members": [
+      "Winter"
+    ],
+    "date": "2025年8月18日",
+    "note": "蹲在哪拍的",
+    "ig_post_url": "https://www.instagram.com/p/DNe61tPT_hG/",
+    "ig_img_urls": [
+      "images/W/winter_tokyo_1.jpg",
+      "images/W/winter_tokyo_2.jpg"
     ]
   },
   {
@@ -775,7 +853,8 @@
     "note": "",
     "ig_post_url": "https://www.instagram.com/p/ChuRn0APCAc/",
     "ig_img_urls": [
-      
+      "images/G/giselle_tokyo_31.jpg",
+      "images/G/giselle_tokyo_33.jpg"
     ]
   },
   {
@@ -790,7 +869,9 @@
     "date": "2023年8月5日",
     "note": "",
     "ig_post_url": "https://www.instagram.com/p/Cg3O4pihlcj/",
-    "ig_img_urls": []
+    "ig_img_urls": [
+      "images/G/giselle_tokyo_34.jpg"
+    ]
   },
   {
     "country": "日本",
@@ -804,7 +885,10 @@
     "date": "2022年8月26日",
     "note": "",
     "ig_post_url": "https://www.instagram.com/p/ChuRn0APCAc/",
-    "ig_img_urls": []
+    "ig_img_urls": [
+      "images/G/giselle_tokyo_35.jpg",
+      "images/G/giselle_tokyo_36.jpg"
+    ]
   },
   {
     "country": "日本",
@@ -818,7 +902,9 @@
     "date": "2022年9月4日",
     "note": "",
     "ig_post_url": "https://www.instagram.com/p/CiFprQtBI9r/",
-    "ig_img_urls": []
+    "ig_img_urls": [
+        "images/K/karina_tokyo_21.jpg"
+    ]
   },
   {
     "country": "日本",
@@ -827,12 +913,18 @@
     "lat": 35.6607323340011,
     "lng": 139.71605364232812,
     "members": [
-      "Winter"
+      "Giselle"
     ],
     "date": "2022年8月5日",
     "note": "",
     "ig_post_url": "https://www.instagram.com/p/Cg3O4pihlcj/",
-    "ig_img_urls": []
+    "ig_img_urls": [
+      "images/G/giselle_tokyo_37.jpg",
+      "images/G/giselle_tokyo_38.jpg",
+      "images/G/giselle_tokyo_39.jpg",
+      "images/G/giselle_tokyo_40.jpg",
+      "images/G/giselle_tokyo_41.jpg"
+    ]
   },
   {
     "country": "日本",
@@ -846,7 +938,9 @@
     "date": "2022年8月26日",
     "note": "B1F",
     "ig_post_url": "https://www.instagram.com/p/ChuRn0APCAc/",
-    "ig_img_urls": []
+    "ig_img_urls": [
+      "images/G/giselle_tokyo_32.jpg"
+    ]
   },
   {
     "country": "日本",
@@ -860,7 +954,10 @@
     "date": "2023年3月17日",
     "note": "",
     "ig_post_url": "https://www.instagram.com/p/Cp6ZuklvYpI/",
-    "ig_img_urls": []
+    "ig_img_urls": [
+      "images/G/giselle_kyoto_1.jpg",
+      "images/G/giselle_kyoto_2.jpg"
+    ]
   },
   {
     "country": "日本",
@@ -874,7 +971,12 @@
     "date": "2023年3月17日",
     "note": "【待定位】此地點線索不足，需進行反覆查證。",
     "ig_post_url": "https://www.instagram.com/p/Cp6aV1GP8wt/",
-    "ig_img_urls": []
+    "ig_img_urls": [
+      "images/G/giselle_kyoto_11.jpg",
+      "images/G/giselle_kyoto_12.jpg",
+      "images/G/giselle_kyoto_13.jpg",
+      "images/G/giselle_kyoto_14.jpg"
+    ]
   },
   {
     "country": "日本",
@@ -888,7 +990,16 @@
     "date": "2023年3月17日",
     "note": "",
     "ig_post_url": "https://www.instagram.com/p/Cp6ZuklvYpI/",
-    "ig_img_urls": []
+    "ig_img_urls": [
+      "images/G/giselle_kyoto_3.jpg",
+      "images/G/giselle_kyoto_4.jpg",
+      "images/G/giselle_kyoto_5.jpg",
+      "images/G/giselle_kyoto_6.jpg",
+      "images/G/giselle_kyoto_7.jpg",
+      "images/G/giselle_kyoto_8.jpg",
+      "images/G/giselle_kyoto_9.jpg",
+      "images/G/giselle_kyoto_10.jpg"
+    ]
   },
   {
     "country": "日本",
@@ -902,7 +1013,15 @@
     "date": "2023年3月20日",
     "note": "1F",
     "ig_post_url": "https://www.instagram.com/p/CqAbDnjB2RE/",
-    "ig_img_urls": []
+    "ig_img_urls": [
+      "images/K/karina_osaka_1.jpg",
+      "images/K/karina_osaka_2.jpg",
+      "images/K/karina_osaka_3.jpg",
+      "images/K/karina_osaka_4.jpg",
+      "images/K/karina_osaka_5.jpg",
+      "images/K/karina_osaka_6.jpg",
+      "images/K/karina_osaka_7.jpg"
+    ]
   },
   {
     "country": "日本",
@@ -915,8 +1034,13 @@
     ],
     "date": "2023年3月20日",
     "note": "",
-    "ig_post_url": "https://www.instagram.com/p/CqAbDnjB2RE/",
-    "ig_img_urls": []
+    "ig_post_url": "https://www.instagram.com/p/CqAbfWjhVeK/",
+    "ig_img_urls": [
+      "images/K/karina_osaka_8.jpg",
+      "images/K/karina_osaka_9.jpg",
+      "images/K/karina_osaka_10.jpg",
+      "images/K/karina_osaka_11.jpg"
+    ]
   },
   {
     "country": "日本",
@@ -929,8 +1053,50 @@
     ],
     "date": "2023年3月20日",
     "note": "",
-    "ig_post_url": "https://www.instagram.com/p/CqAbDnjB2RE/",
-    "ig_img_urls": []
+    "ig_post_url": "https://www.instagram.com/p/Cp_-FubBXKQ/",
+    "ig_img_urls": [
+      "images/W/winter_osaka_1.jpg"
+    ]
+  },
+  {
+    "country": "日本",
+    "city": "東京",
+    "name": "カピねこカフェ吉祥寺",
+    "lat": 35.70254854994675,
+    "lng": 139.57893806676924,
+    "members": [
+      "Ningning"
+    ],
+    "date": "2025年6月20日",
+    "note": "",
+    "ig_post_url": "",
+    "ig_img_urls": [
+      "images/N/ningning_tokyo_11.jpg"
+    ]
+  },
+  {
+    "country": "日本",
+    "city": "東京",
+    "name": "ぴあアリーナMM 裏側 (高速道路側)",
+    "lat": 35.45542346100787, 
+    "lng": 139.6280916163138,
+    "members": [
+      "Winter"
+    ],
+    "date": "2025年5月24日",
+    "note": "",
+    "ig_post_url": "https://www.instagram.com/p/DKCO3W-TOFA/",
+    "ig_img_urls": [
+      "images/W/winter_tokyo_23.jpg",
+      "images/W/winter_tokyo_24.jpg",
+      "images/W/winter_tokyo_25.jpg",
+      "images/W/winter_tokyo_26.jpg",
+      "images/W/winter_tokyo_27.jpg",
+      "images/W/winter_tokyo_28.jpg",
+      "images/W/winter_tokyo_29.jpg",
+      "images/W/winter_tokyo_30.jpg",
+      "images/W/winter_tokyo_31.jpg"
+    ]
   }
 ]
 
