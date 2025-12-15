@@ -59,7 +59,7 @@
         }
         .location-card strong { 
             display: block; 
-            font-size: 20px; 
+            font-size: 1.5vw; 
             margin-bottom: 5px; 
             color: #333; 
             overflow-wrap: break-word; 
@@ -76,7 +76,7 @@
         }
         .card-line {
             display: block;
-            font-size: 18px;
+            font-size: 1.3vw;
             color: #666;
             line-height: 1.4;
         }
@@ -85,27 +85,14 @@
             display: inline-block;
             margin-top: 0;
             margin-right: 15px;
-            font-size: 18px; 
+            font-size: 1.3vw; 
             line-height: 1.4;
         }
         .info-window-content{
-            font-size: 20px;
+            font-size: 1.5vw;
         }
         .info-window-line{
-            font-size: 18px;
-        }
-        /* 外部導航按鈕樣式 */
-        .btn-navigate { 
-            display: block;
-            width: 100%;
-            margin-top: 10px;
-            padding: 8px 15px;
-            background-color: #007bff; /* 藍色 */
-            color: white;
-            border-radius: 4px;
-            text-decoration: none;
-            text-align: center;
-            font-weight: bold;
+            font-size: 1.3vw;
         }
 
         /* 響應式設計：針對手機螢幕 */
@@ -325,9 +312,6 @@
                     <div class="info-window-line"><strong>成員：</strong><br> ${membersWithSymbols}</div> 
                     <div class="info-window-line"><strong>發文日期：</strong> ${location.date}</div>
                     <div class="info-window-line"><strong>備註：</strong> ${location.note}</div> 
-                    <a href="${navUrl}" target="_blank" class="btn-navigate">
-                        📍 導航到 App/網頁 (從我的位置)
-                    </a>
                 </div>
             `;
             
@@ -377,7 +361,7 @@
             // 根據來源類型生成連結 HTML (只有當 URL 有效時才生成)
             const sourceLinksHTML = sourceUrls.map((url, i) => {
                 const displayType = getUrlDisplayType(url);
-                return `<a class="card-link" href="${url}" target="_blank">${displayType} 連結 ${i+1}</a>`;
+                return `<a class="card-link" href="${url}" target="_blank">${displayType}</a>`;
             }).join(''); 
             
             // 外部導航 URL (即使沒有來源連結，導航連結通常也應顯示，因為座標是有的)
@@ -412,7 +396,7 @@
                             alt="${location.name} 預覽圖"
                             style="width: 100%; height: 100%; object-fit: cover;"
                         >
-                        <span style="position: absolute; bottom: 5px; right: 5px; background: rgba(0,0,0,0.6); color: white; padding: 2px 5px; border-radius: 3px; font-size: 10px;">
+                        <span style="position: absolute; bottom: 5px; right: 5px; background: rgba(0,0,0,0.6); color: white; padding: 2px 5px; border-radius: 3px; font-size: 1.3vw;">
                             ${imageUrls.length} 張
                         </span>
                     </div>
